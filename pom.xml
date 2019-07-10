@@ -1,0 +1,164 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>javier</groupId>
+  <artifactId>tfg</artifactId>
+  <version>1.0</version>
+  <packaging>war</packaging>
+
+  <name>tfg</name>
+  <url>http://maven.apache.org</url>
+
+<properties>
+        <appengine.app.version>1</appengine.app.version>
+        <appengine.target.version>1.9.71</appengine.target.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jackson.version>2.8.0</jackson.version>
+    </properties>
+
+    <dependencies>
+        <!-- Compile/runtime dependencies -->
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-1.0-sdk</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-endpoints</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.appengine</groupId>
+            <artifactId>appengine-api-labs</artifactId>
+            <version>${appengine.target.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>servlet-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.inject</groupId>
+            <artifactId>javax.inject</artifactId>
+            <version>1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.objectify</groupId>
+            <artifactId>objectify</artifactId>
+            <version>5.0</version>
+        </dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+	<artifactId>jackson-databind</artifactId>
+	<version>${jackson.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.fasterxml.jackson.core</groupId>
+    <artifactId>jackson-core</artifactId>
+    <version>${jackson.version}</version>
+</dependency>
+<dependency>
+    <groupId>com.stripe</groupId>
+    <artifactId>stripe-java</artifactId>
+    <version>9.8.0</version>
+</dependency>
+<dependency>
+		    <groupId>com.google.cloud</groupId>
+		    <artifactId>google-cloud-storage</artifactId>
+		    <version>1.38.0</version>
+		    <!-- CHANGE --><exclusions>
+	            <exclusion>
+	                <groupId>com.google.guava</groupId>
+	                <artifactId>guava-jdk5</artifactId>
+	            </exclusion>
+	        </exclusions>
+		</dependency>
+		<dependency>
+    		<groupId>com.google.appengine.tools</groupId>
+    		<artifactId>appengine-gcs-client</artifactId>
+    		<version>RELEASE</version>
+    		<scope>compile</scope>
+    		<exclusions>
+	            <exclusion>
+	                <groupId>com.google.guava</groupId>
+	                <artifactId>guava-jdk5</artifactId>
+	            </exclusion>
+	        </exclusions>
+		</dependency>
+		<dependency>
+    		<groupId>com.google.api-client</groupId>
+    		<artifactId>google-api-client</artifactId>
+    		<version>1.27.0</version>
+		</dependency>
+        <dependency>
+        	<groupId>com.google.code.gson</groupId>
+        	<artifactId>gson</artifactId>
+        	<version>2.8.5</version>
+		</dependency>
+        
+        <dependency>
+    <groupId>com.google.guava</groupId>
+    <artifactId>guava</artifactId>
+    <version>19.0</version>
+</dependency>
+
+        <!-- Test Dependencies -->
+    </dependencies>
+    <build>
+        <outputDirectory>target/${project.artifactId}-${project.version}/WEB-INF/classes</outputDirectory>
+	        <plugins>
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <version>2.5.1</version>
+	                <artifactId>maven-compiler-plugin</artifactId>
+	                <configuration>
+	                    <source>1.8</source>
+	                    <target>1.8</target>
+	                </configuration>
+	            </plugin>
+	            <plugin>
+	                <groupId>org.apache.maven.plugins</groupId>
+	                <artifactId>maven-war-plugin</artifactId>
+	                <version>2.3</version>
+	                <configuration>
+	                    <webXml>${project.build.directory}/generated-sources/appengine-endpoints/WEB-INF/web.xml</webXml>
+	                    <webResources>
+	                        <resource>
+	                            <!-- this is relative to the pom.xml directory -->
+	                            <directory>${project.build.directory}/generated-sources/appengine-endpoints</directory>
+	                            <!-- the list has a default value of ** -->
+	                            <includes>
+	                                <include>WEB-INF/*.discovery</include>
+	                                <include>WEB-INF/*.api</include>
+	                            </includes>
+	                        </resource>
+	                    </webResources>
+	                </configuration>
+	            </plugin>
+	            <plugin>
+	                <groupId>com.google.appengine</groupId>
+	                <artifactId>appengine-maven-plugin</artifactId>
+	                <version>${appengine.target.version}</version>
+	                <configuration>
+	                    <enableJarClasses>false</enableJarClasses>
+	                    <port>1231</port>
+	                </configuration>
+	            </plugin>
+	            <plugin>
+	              <groupId>com.google.appengine</groupId>
+	              <artifactId>gcloud-maven-plugin</artifactId>
+	              <version>2.0.9.101.v20160316</version>
+	              <configuration>
+	                <set_default>true</set_default>
+	              </configuration>
+            </plugin>
+	        </plugins>
+    </build>
+</project>
